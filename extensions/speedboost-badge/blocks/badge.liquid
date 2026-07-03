@@ -1,0 +1,46 @@
+{% comment %}
+  SpeedBoost - optional storefront app block.
+  Merchant adds this manually via Theme Editor > Add block (App blocks).
+  This never touches theme files directly (no Asset API), so uninstalling
+  the app removes this block cleanly with zero leftover code.
+{% endcomment %}
+
+{% if block.settings.show_badge %}
+  <div class="speedboost-badge" style="text-align:{{ block.settings.alignment }}; padding:8px 0;">
+    <span style="font-size:12px; color:#6b7177; display:inline-flex; align-items:center; gap:4px;">
+      ⚡ {{ block.settings.badge_text | default: "Images optimized by SpeedBoost" }}
+    </span>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "SpeedBoost Badge",
+  "target": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge text",
+      "default": "Images optimized by SpeedBoost"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    }
+  ]
+}
+{% endschema %}

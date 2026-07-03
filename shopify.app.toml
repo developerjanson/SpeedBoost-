@@ -1,0 +1,42 @@
+name = "SpeedBoost"
+client_id = "your_api_key_here"
+application_url = "https://your-app-url.com"
+embedded = true
+
+# Managed installation: Shopify handles OAuth/install itself.
+# Our backend only needs to handle Token Exchange (see server/auth.js) —
+# no redirect_urls / manual callback route required.
+use_legacy_install_flow = false
+
+[access_scopes]
+scopes = "read_products,write_products"
+
+[webhooks]
+api_version = "2024-10"
+
+  [[webhooks.subscriptions]]
+  topics = ["app/uninstalled"]
+  uri = "/webhooks/app/uninstalled"
+
+  [[webhooks.subscriptions]]
+  topics = ["customers/data_request"]
+  uri = "/webhooks/customers/data_request"
+
+  [[webhooks.subscriptions]]
+  topics = ["customers/redact"]
+  uri = "/webhooks/customers/redact"
+
+  [[webhooks.subscriptions]]
+  topics = ["shop/redact"]
+  uri = "/webhooks/shop/redact"
+
+[app_proxy]
+url = "https://your-app-url.com"
+subpath = "speedboost"
+prefix = "apps"
+
+[pos]
+embedded = false
+
+[build]
+automatically_update_urls_on_dev = true

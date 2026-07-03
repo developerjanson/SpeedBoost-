@@ -1,0 +1,4 @@
+name = "SpeedBoost"
+type = "theme"
+
+[extension_points]
