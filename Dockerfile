@@ -16,3 +16,4 @@ COPY . .
 RUN npm run build
 
 CMD ["npm", "run", "docker-start"]
+# cache bust 1784145563
