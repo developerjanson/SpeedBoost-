@@ -15,5 +15,5 @@ COPY . .
 
 RUN npm run build
 
-CMD ["npm", "run", "docker-start"]
+CMD ["sh", "-c", "npm run setup && exec npm run start"]
 # cache bust 1784145563
