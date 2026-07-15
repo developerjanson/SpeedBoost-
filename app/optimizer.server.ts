@@ -1,4 +1,4 @@
-import sharp from "sharp";
+
 
 export async function compressImage(
   imageUrl: string,
@@ -6,6 +6,8 @@ export async function compressImage(
   maxWidth: number,
   convertWebp: boolean
 ): Promise<{ buffer: Buffer; contentType: string; filename: string }> {
+  const sharp = (await import("sharp")).default;
+
   const response = await fetch(imageUrl);
   const arrayBuffer = await response.arrayBuffer();
   const inputBuffer = Buffer.from(arrayBuffer);
