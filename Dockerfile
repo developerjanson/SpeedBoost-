@@ -6,6 +6,7 @@ EXPOSE 3000
 WORKDIR /app
 
 ENV NODE_ENV=production
+ENV PORT=3000
 
 COPY package.json package-lock.json* ./
 
@@ -15,5 +16,4 @@ COPY . .
 
 RUN npm run build
 
-CMD ["sh", "-c", "npm run setup && exec npm run start"]
-# cache bust 1784145563
+CMD ["npm", "run", "start"]
