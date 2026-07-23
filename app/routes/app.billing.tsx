@@ -11,7 +11,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     onFailure: async () =>
       billing.request({
         plan: "SpeedBoostPro",
-        isTest: true,
+        isTest: process.env.NODE_ENV !== "production",
       }),
   });
 
