@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "95dba75f7cf5b176583299bbe8bfa6c2"
-name = "speedboost-v2"
+name = "SpeedBoost"
 application_url = "https://speedboost.onrender.com"
 embedded = true
 
