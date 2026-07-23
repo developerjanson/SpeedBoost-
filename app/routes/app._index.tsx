@@ -330,12 +330,15 @@ export default function Index() {
         </s-stack>
       </s-section>
 
-      <s-section slot="aside" heading="Subscription">
-        <s-paragraph>SpeedBoost Pro — $10/month</s-paragraph>
-        <s-button href="/app/billing" variant="primary">
-          Upgrade to Pro
-        </s-button>
-      </s-section>
+   <s-section slot="aside" heading="Subscription">
+  <s-stack direction="block" gap="small">
+    <s-paragraph>SpeedBoost Pro — $10/month</s-paragraph>
+    <s-badge tone="success">Active</s-badge>
+    <s-paragraph>
+      Thank you for subscribing! All optimization features are unlocked.
+    </s-paragraph>
+  </s-stack>
+</s-section>
 
       {/* ---------- RUN OPTIMIZATION ---------- */}
       <s-section heading="Run Optimization">
