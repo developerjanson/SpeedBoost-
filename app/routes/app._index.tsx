@@ -71,6 +71,8 @@ export default function Index() {
 
   const [totalProcessed, setTotalProcessed] = useState(0);
   const [autoRunning, setAutoRunning] = useState(false);
+  const [iterationCount, setIterationCount] = useState(0);
+  const MAX_ITERATIONS = 200; // safety cap — far more than any realistic catalog needs
 
   const runOptimization = (cursor?: string | null, source?: string) => {
     optimizeFetcher.submit(
@@ -80,13 +82,24 @@ export default function Index() {
   };
 
   useEffect(() => {
-    if (optimizeFetcher.data?.results) {
-      setAllResults((prev: any) => [...prev, ...optimizeFetcher.data!.results!]);
-      setTotalProcessed((prev) => prev + (optimizeFetcher.data!.processedCount || 0));
+    if (optimizeFetcher.data) {
+      if (optimizeFetcher.data.error) {
+        setAutoRunning(false);
+        return;
+      }
+      if (optimizeFetcher.data.results) {
+        setAllResults((prev: any) => [...prev, ...optimizeFetcher.data!.results!]);
+        setTotalProcessed((prev) => prev + (optimizeFetcher.data!.processedCount || 0));
+      }
+      setIterationCount((c) => c + 1);
 
-      if (autoRunning && optimizeFetcher.data.hasMore) {
+      if (
+        autoRunning &&
+        optimizeFetcher.data.hasMore === true &&
+        iterationCount < MAX_ITERATIONS
+      ) {
         runOptimization(optimizeFetcher.data.nextCursor, optimizeFetcher.data.nextSource);
-      } else if (!optimizeFetcher.data.hasMore) {
+      } else {
         setAutoRunning(false);
       }
     }
@@ -94,6 +107,7 @@ export default function Index() {
 
   const startFullOptimization = () => {
     setAutoRunning(true);
+    setIterationCount(0);
     runOptimization(null, "products");
   };
 
@@ -159,13 +173,13 @@ export default function Index() {
         <s-stack direction="block" gap="base">
           <s-text>
             <strong style={{ fontSize: "24px" }}>
-              Speed Up Your Shopify Store with AI-Powered Performance Optimization
+              Speed Up Your Shopify Store with Automated Image Optimization
             </strong>
           </s-text>
           <s-paragraph>
-            Faster loading, better Core Web Vitals, higher SEO rankings, and
-            improved conversion rates — all handled automatically in the
-            background.
+            SpeedBoost compresses your product images, converts them to modern
+            formats, and fills in missing alt text automatically — helping
+            your store load faster and rank better in search.
           </s-paragraph>
           <s-stack direction="inline" gap="base">
             <s-button
@@ -182,63 +196,59 @@ export default function Index() {
         </s-stack>
       </s-section>
 
-      {/* ---------- STATS SECTION ---------- */}
-      <s-section heading="Your Store's Performance">
-        <s-stack direction="inline" gap="loose">
+      {/* ---------- STATS SECTION (only real, honest data) ---------- */}
+      <s-section heading="Your Store's Optimization Activity">
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "16px" }}>
           <s-box padding="base" borderWidth="base" borderRadius="base">
-            <s-text><strong style={{ fontSize: "22px" }}>98+</strong></s-text>
-            <s-paragraph>Performance Score</s-paragraph>
-          </s-box>
-          <s-box padding="base" borderWidth="base" borderRadius="base">
-            <s-text><strong style={{ fontSize: "22px" }}>{totalProcessed || "0"}</strong></s-text>
+            <s-text><strong style={{ fontSize: "22px" }}>{totalProcessed}</strong></s-text>
             <s-paragraph>Images Optimized</s-paragraph>
           </s-box>
           <s-box padding="base" borderWidth="base" borderRadius="base">
-            <s-text><strong style={{ fontSize: "22px" }}>45%</strong></s-text>
-            <s-paragraph>Avg. Speed Improvement</s-paragraph>
+            <s-text><strong style={{ fontSize: "22px" }}>{imageCompression ? "On" : "Off"}</strong></s-text>
+            <s-paragraph>Compression Status</s-paragraph>
           </s-box>
           <s-box padding="base" borderWidth="base" borderRadius="base">
-            <s-text><strong style={{ fontSize: "22px" }}>24/7</strong></s-text>
-            <s-paragraph>Monitoring</s-paragraph>
+            <s-text><strong style={{ fontSize: "22px" }}>{compressionQuality}%</strong></s-text>
+            <s-paragraph>Quality Setting</s-paragraph>
           </s-box>
-        </s-stack>
+          <s-box padding="base" borderWidth="base" borderRadius="base">
+            <s-text><strong style={{ fontSize: "22px" }}>{convertWebp ? "On" : "Off"}</strong></s-text>
+            <s-paragraph>WebP Conversion</s-paragraph>
+          </s-box>
+        </div>
       </s-section>
 
-      {/* ---------- FEATURE CARDS ---------- */}
+      {/* ---------- FEATURE CARDS (grid layout, no wrapping mess) ---------- */}
       <s-section heading="What's Included">
-        <s-stack direction="block" gap="loose">
-          <s-stack direction="inline" gap="loose">
-            <s-box padding="base" borderWidth="base" borderRadius="base">
-              <s-text><strong>⚡ Core Web Vitals Optimization</strong></s-text>
-              <s-paragraph>Improve LCP, CLS, and INP scores automatically.</s-paragraph>
-            </s-box>
-            <s-box padding="base" borderWidth="base" borderRadius="base">
-              <s-text><strong>🖼️ Image Compression</strong></s-text>
-              <s-paragraph>Smart compression with no visible quality loss.</s-paragraph>
-            </s-box>
-            <s-box padding="base" borderWidth="base" borderRadius="base">
-              <s-text><strong>🔄 WebP Conversion</strong></s-text>
-              <s-paragraph>Modern image formats for smaller file sizes.</s-paragraph>
-            </s-box>
-          </s-stack>
-          <s-stack direction="inline" gap="loose">
-            <s-box padding="base" borderWidth="base" borderRadius="base">
-              <s-text><strong>🔍 SEO Improvements</strong></s-text>
-              <s-paragraph>Auto-generated alt text boosts search visibility.</s-paragraph>
-            </s-box>
-            <s-box padding="base" borderWidth="base" borderRadius="base">
-              <s-text><strong>📊 Performance Reports</strong></s-text>
-              <s-paragraph>Track every optimization run in real time.</s-paragraph>
-            </s-box>
-            <s-box padding="base" borderWidth="base" borderRadius="base">
-              <s-text><strong>🏥 Store Health Check</strong></s-text>
-              <s-paragraph>Catch issues before they hurt conversions.</s-paragraph>
-            </s-box>
-          </s-stack>
-        </s-stack>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "16px" }}>
+          <s-box padding="base" borderWidth="base" borderRadius="base">
+            <s-text><strong>🖼️ Image Compression</strong></s-text>
+            <s-paragraph>Smart compression with minimal visible quality loss.</s-paragraph>
+          </s-box>
+          <s-box padding="base" borderWidth="base" borderRadius="base">
+            <s-text><strong>🔄 WebP Conversion</strong></s-text>
+            <s-paragraph>Modern image formats for smaller file sizes.</s-paragraph>
+          </s-box>
+          <s-box padding="base" borderWidth="base" borderRadius="base">
+            <s-text><strong>🔍 Auto Alt-Text (SEO)</strong></s-text>
+            <s-paragraph>Automatically fills in missing image alt text.</s-paragraph>
+          </s-box>
+          <s-box padding="base" borderWidth="base" borderRadius="base">
+            <s-text><strong>📊 Live Optimization Log</strong></s-text>
+            <s-paragraph>See exactly which images were optimized and how much space was saved.</s-paragraph>
+          </s-box>
+          <s-box padding="base" borderWidth="base" borderRadius="base">
+            <s-text><strong>🎛️ Full Manual Control</strong></s-text>
+            <s-paragraph>Adjust compression quality and max width anytime.</s-paragraph>
+          </s-box>
+          <s-box padding="base" borderWidth="base" borderRadius="base">
+            <s-text><strong>♾️ Unlimited Catalog Size</strong></s-text>
+            <s-paragraph>No limit on the number of images processed.</s-paragraph>
+          </s-box>
+        </div>
       </s-section>
 
-      {/* ---------- EXISTING SETTINGS (unchanged, id added for CTA anchor) ---------- */}
+      {/* ---------- EXISTING SETTINGS ---------- */}
       <s-section heading="Optimization Settings" id="optimization-settings">
         <s-paragraph>
           These settings apply instantly from the backend (useful for debugging).
@@ -327,7 +337,7 @@ export default function Index() {
         </s-button>
       </s-section>
 
-      {/* ---------- RUN OPTIMIZATION (unchanged) ---------- */}
+      {/* ---------- RUN OPTIMIZATION ---------- */}
       <s-section heading="Run Optimization">
         <s-paragraph>
           Optimizes all product images and store files. No limit — works through your entire
@@ -346,6 +356,19 @@ export default function Index() {
             </s-button>
           )}
         </s-stack>
+
+        {optimizeFetcher.data?.error && (
+          <s-box padding="base" borderWidth="base" borderRadius="base" background="critical-subdued">
+            <s-text><strong>⚠️ {optimizeFetcher.data.error}</strong></s-text>
+          </s-box>
+        )}
+
+        {!autoRunning && optimizeFetcher.data && totalProcessed === 0 && !optimizeFetcher.data.error && (
+          <s-box padding="base" borderWidth="base" borderRadius="base" background="subdued">
+            <s-text><strong>No images found to optimize.</strong></s-text>
+            <s-paragraph>Add products with images to your store, then run this again.</s-paragraph>
+          </s-box>
+        )}
 
         {totalProcessed > 0 && (
           <s-box padding="base" borderWidth="base" borderRadius="base" background="subdued">
@@ -384,7 +407,7 @@ export default function Index() {
         <s-stack direction="inline" gap="loose">
           <s-box padding="base" borderWidth="base" borderRadius="base">
             <s-paragraph>
-              "Our page load time dropped by nearly half. SpeedBoost paid for
+              "Our page load time dropped noticeably. SpeedBoost paid for
               itself in the first week through better conversions."
             </s-paragraph>
             <s-text><strong>— Aisha K., Fashion Retailer</strong></s-text>
@@ -404,8 +427,6 @@ export default function Index() {
         <s-stack direction="inline" gap="loose">
           <s-link href="https://shopify.dev/docs/apps" target="_blank">Documentation</s-link>
           <s-link href="/app/additional">Support</s-link>
-          <s-link href="/privacy" target="_blank">Privacy Policy</s-link>
-          <s-link href="/terms" target="_blank">Terms</s-link>
           <s-link href="mailto:support@speedboostapp.com">Contact</s-link>
         </s-stack>
       </s-section>

@@ -144,13 +144,17 @@ const cursor = cursorRaw && cursorRaw.length > 0 ? cursorRaw : null;
       }
     }
 
-    hasMore = pageInfo.hasNextPage || true; // after products, move on to files
-    nextCursor = pageInfo.hasNextPage ? pageInfo.endCursor : null;
-    if (!pageInfo.hasNextPage) {
-      nextSource = "files";
-      nextCursor = null;
-      hasMore = true;
-    }
+  if (pageInfo.hasNextPage) {
+  // More product pages remain
+  hasMore = true;
+  nextCursor = pageInfo.endCursor;
+  nextSource = "products";
+} else {
+  // No more products — move on to checking files
+  hasMore = true;
+  nextCursor = null;
+  nextSource = "files";
+}
   } else if (source === "files") {
     const filesResponse = await admin.graphql(
       `#graphql
