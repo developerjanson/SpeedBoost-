@@ -6,10 +6,22 @@ export default function App() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <title>SpeedBoost — Shopify Speed Optimization</title>
+        <title>SpeedBoost — Shopify Image Optimizer & Speed Booster</title>
         <meta
           name="description"
-          content="Speed up your Shopify store with AI-powered image compression, WebP conversion, and Core Web Vitals optimization."
+          content="Compress images, convert to WebP, and auto-generate alt text to speed up your Shopify store and improve Core Web Vitals."
+        />
+        <meta property="og:title" content="SpeedBoost — Shopify Image Optimizer & Speed Booster" />
+        <meta
+          property="og:description"
+          content="Automatically compress images, convert to WebP, and generate SEO-friendly alt text — no coding required."
+        />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="SpeedBoost — Shopify Image Optimizer" />
+        <meta
+          name="twitter:description"
+          content="Speed up your Shopify store with automatic image compression and WebP conversion."
         />
         <link rel="preconnect" href="https://cdn.shopify.com/" />
         <link
