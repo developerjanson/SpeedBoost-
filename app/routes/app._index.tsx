@@ -430,7 +430,9 @@ export default function Index() {
         <s-stack direction="inline" gap="loose">
           <s-link href="https://shopify.dev/docs/apps" target="_blank">Documentation</s-link>
           <s-link href="/app/additional">Support</s-link>
-          <s-link href="mailto:support@speedboostapp.com">Contact</s-link>
+          <s-link href="/privacy" target="_blank">Privacy Policy</s-link>
+          <s-link href="/terms" target="_blank">Terms</s-link>
+          <s-link href="mailto:developerjanson@gmail.com">Contact</s-link>
         </s-stack>
       </s-section>
     </s-page>
