@@ -420,25 +420,7 @@ export default function Index() {
         )}
       </s-section>
 
-      {/* ---------- TESTIMONIALS ---------- */}
-      <s-section heading="Loved by Merchants">
-        <s-stack direction="inline" gap="loose">
-          <s-box padding="base" borderWidth="base" borderRadius="base">
-            <s-paragraph>
-              "Our page load time dropped noticeably. SpeedBoost paid for
-              itself in the first week through better conversions."
-            </s-paragraph>
-            <s-text><strong>— Aisha K., Fashion Retailer</strong></s-text>
-          </s-box>
-          <s-box padding="base" borderWidth="base" borderRadius="base">
-            <s-paragraph>
-              "Setup took two minutes. The auto alt-text feature alone
-              improved our SEO traffic noticeably."
-            </s-paragraph>
-            <s-text><strong>— Marcus T., Home Goods Store</strong></s-text>
-          </s-box>
-        </s-stack>
-      </s-section>
+  
 
       {/* ---------- FOOTER ---------- */}
  <s-section>
