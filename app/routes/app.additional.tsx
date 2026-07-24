@@ -47,7 +47,7 @@ export default function AdditionalPage() {
           If you run into any issues or have feature requests, our support
           team is happy to help.
         </s-paragraph>
-        <s-button href="mailto:support@speedboostapp.com" variant="primary">
+        <s-button href="mailto:developerjanson@gmail.com" variant="primary">
           Contact Support
         </s-button>
       </s-section>
