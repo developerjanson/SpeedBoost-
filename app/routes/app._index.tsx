@@ -72,6 +72,7 @@ export default function Index() {
   const [totalProcessed, setTotalProcessed] = useState(0);
   const [autoRunning, setAutoRunning] = useState(false);
   const [iterationCount, setIterationCount] = useState(0);
+  const [showSavedToast, setShowSavedToast] = useState(false);
   const MAX_ITERATIONS = 200; // safety cap — far more than any realistic catalog needs
 
   const runOptimization = (cursor?: string | null, source?: string) => {
@@ -140,6 +141,14 @@ export default function Index() {
     );
   };
 
+  useEffect(() => {
+  if (fetcher.data?.saved) {
+    setShowSavedToast(true);
+    const timer = setTimeout(() => setShowSavedToast(false), 3000);
+    return () => clearTimeout(timer);
+  }
+}, [fetcher.data]);
+
   if (!hasActivePayment) {
     return (
       <s-page heading="SpeedBoost">
@@ -167,7 +176,13 @@ export default function Index() {
       >
         Save Settings
       </s-button>
-
+{showSavedToast && (
+  <s-section>
+    <s-box padding="base" borderWidth="base" borderRadius="base" background="success-subdued">
+      <s-text><strong>✅ Settings saved successfully!</strong></s-text>
+    </s-box>
+  </s-section>
+)}
       {/* ---------- HERO SECTION ---------- */}
       <s-section>
         <s-stack direction="block" gap="base">
