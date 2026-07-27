@@ -3,19 +3,21 @@ import { redirect } from "react-router";
 import { authenticate } from "../shopify.server";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 
+// App handle from the Partners Dashboard app URL (e.g. .../apps/speedboost-v2-1/...)
+const APP_HANDLE = "speedboost-v2-1";
+
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { billing } = await authenticate.admin(request);
+  const { session } = await authenticate.admin(request);
 
-  await billing.require({
-    plans: ["SpeedBoostPro"],
-    onFailure: async () =>
-      billing.request({
-        plan: "SpeedBoostPro",
-        isTest: process.env.NODE_ENV !== "production",
-      }),
-  });
+  // Extract the store handle from the shop domain, e.g. "cool-shop" from "cool-shop.myshopify.com"
+  const storeHandle = session.shop.replace(".myshopify.com", "");
 
-  return redirect("/app");
+  // Managed Pricing apps can't use billing.require()/billing.request() to create charges.
+  // Instead, redirect the merchant to Shopify's hosted plan selection page.
+  return redirect(
+    `https://admin.shopify.com/store/${storeHandle}/charges/${APP_HANDLE}/pricing_plans`,
+    { target: "_top" } // required since this URL is outside the embedded app's iframe scope
+  );
 };
 
 export const headers: HeadersFunction = (headersArgs) => {
