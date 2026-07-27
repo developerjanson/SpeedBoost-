@@ -1,5 +1,4 @@
 import type { LoaderFunctionArgs, HeadersFunction } from "react-router";
-import { redirect } from "react-router";
 import { authenticate } from "../shopify.server";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 
@@ -7,7 +6,11 @@ import { boundary } from "@shopify/shopify-app-react-router/server";
 const APP_HANDLE = "speedboost-v2-1";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { session } = await authenticate.admin(request);
+  // IMPORTANT: use the "redirect" returned by authenticate.admin(), NOT the
+  // plain "redirect" from "react-router". The plain one does a normal HTTP 302,
+  // which gets blocked by X-Frame-Options inside the embedded iframe.
+  // Shopify's own redirect uses App Bridge to perform a proper top-level navigation.
+  const { session, redirect } = await authenticate.admin(request);
 
   // Extract the store handle from the shop domain, e.g. "cool-shop" from "cool-shop.myshopify.com"
   const storeHandle = session.shop.replace(".myshopify.com", "");
