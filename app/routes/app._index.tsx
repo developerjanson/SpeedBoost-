@@ -8,10 +8,7 @@ import db from "../db.server";
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { session, billing } = await authenticate.admin(request);
 
-  const { hasActivePayment } = await billing.check({
-    plans: ["SpeedBoostPro"],
-    isTest: true,
-  });
+const { hasActivePayment } = await billing.check();
 
   let settings = await db.settings.findUnique({ where: { shop: session.shop } });
   if (!settings) {
