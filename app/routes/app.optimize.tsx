@@ -1,7 +1,12 @@
-import type { ActionFunctionArgs } from "react-router";
+import type { ActionFunctionArgs, HeadersFunction } from "react-router";
 import { authenticate } from "../shopify.server";
 import { compressImage } from "../optimizer.server";
 import db from "../db.server";
+import { boundary } from "@shopify/shopify-app-react-router/server";
+
+export const headers: HeadersFunction = (headersArgs) => {
+  return boundary.headers(headersArgs);
+};
 
 function generateAltText(productTitle: string, index: number): string {
   return index === 0 ? `${productTitle} - Product Photo` : `${productTitle} - Product Photo ${index + 1}`;
